@@ -7,8 +7,12 @@ namespace leaf.eve
 
         EventType getEventType();
 
+        public void setDriver(driver.Driver driver);
 
+        public string GetSelfId();
         Message GetMessage();
+
+        object? getRawField(string key);
     }
 
     public enum EventType

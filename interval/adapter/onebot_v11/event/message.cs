@@ -1,6 +1,7 @@
 using leaf.eve;
 using TouchSocket.Core;
 using leaf.core.message;
+using System.Collections;
 
 namespace leaf.adapter.onebot_v11.eve
 {
@@ -19,10 +20,12 @@ namespace leaf.adapter.onebot_v11.eve
             return message!;
         }
 
-        public Int64 self_id { get; set; }
+        
 
 
-        public Int64 user_id {get;set;}
+
+
+        public Int64 user_id { get; set; }
         public string message_type { get; set; } = "";
         public Int32 message_id { get; set; }
 
@@ -32,6 +35,35 @@ namespace leaf.adapter.onebot_v11.eve
         public int front { get; set; }
 
         public Sender? sender { get; set; }
+
+
+        public async Task<Hashtable> send(Message messages)
+        {
+            var bot = (Bot?)driver?.GetBot(self_id.ToString());
+            if (bot == null)
+            {
+                throw new Exception("bot not load");
+            }
+            if (message_type == "group")
+            {
+                return await bot!.send_group_msg(((GroupMessageEvent)this).group_id, messages) ?? new Hashtable();
+            }
+            else if (message_type == "private")
+            {
+                return await bot!.send_private_msg(user_id, messages) ?? new Hashtable();
+            }
+            return new Hashtable();
+        }
+
+        public async Task<Hashtable> send(MessageSegment segment)
+        {
+            return await send(new Message() + segment);
+        }
+
+        public override string ToString()
+        {
+            return SerializeConvert.ToJson(this);
+        }
 
     }
 

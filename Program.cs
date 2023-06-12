@@ -6,6 +6,8 @@ using leaf.core;
 using leaf.driver;
 using leaf.log;
 using leaf.adapter.onebot_v11.eve;
+using leaf.core.message;
+using static leaf.adapter.onebot_v11.Rule;
 
 namespace main
 {
@@ -36,16 +38,18 @@ namespace main
            return new Matcher[]{this};
         }
 
-        [OnMessage("group")]
-        public async void OnMessage(Bot bot, MessageEvent e)
-        {
-           L.Info($"echo OnMessage success,{e.raw_message}");
-        }
 
-        [OnCommand("echo")]
+        [OnCommand("echo",priority = 1)]
+        [R(typeof(Rule), typeof(MyDelegate),"OnlyToMe")]
         public async void _(Bot bot, MessageEvent e)
         {
            L.Info($"echo success,{e.raw_message}");
+           
+           await e.send(MessageSegment.Text($"echo {e.raw_message}"));
+           var l =  await  bot.GetGroupList();
+            l.ForEach(item => { L.Debug(item.group_name); });
         }
+
+        
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Text;
 using System.Text.Json.Nodes;
+using TouchSocket.Core;
 
 namespace leaf.core.message
 {
@@ -27,10 +28,6 @@ namespace leaf.core.message
         }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public string ExtractText()
         {
             var result = new StringBuilder();
@@ -43,6 +40,39 @@ namespace leaf.core.message
             }
             return result.ToString();
         }
+
+        public override string ToString()
+        {
+            return SerializeConvert.ToJson(this);
+        }
+
+        public bool IsEmpty()
+        {
+            return this.Count == 0;
+        }
+
+        public bool has(string @type){
+            foreach(MessageSegment segment in this){
+                if (segment.type == @type){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool hasText(){
+            return has("text");
+        }
+
+        public bool hasImage(){
+            return has("image");
+        }
+
+        public List<MessageSegment> get(string @type){
+            return this.FindAll((MessageSegment segment) => segment.type == @type);
+        }
+
+
 
     }
 
@@ -69,6 +99,20 @@ namespace leaf.core.message
         public MessageSegment(string @type,Hashtable data) {
             this.@type = @type;
             this.data = data;
+        }
+
+        public static MessageSegment Text(string text){
+            var data = new Hashtable();
+            data["text"] = text;
+            return new MessageSegment("text",data);
+        }
+
+
+
+
+        public override string ToString()
+        {
+            return SerializeConvert.ToJson(this);
         }
 
     }

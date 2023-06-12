@@ -17,15 +17,7 @@
     <PackageReference Include="TouchSocket.AspNetCore" Version="1.3.0" />
     <PackageReference Include="YamlDotNet" Version="13.1.0" />
 
-    <ContentWithTargetPath Include="data\config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>config.json</TargetPath>
-    </ContentWithTargetPath>
 
-    <ContentWithTargetPath Include="data\config.toml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>config.toml</TargetPath>
-    </ContentWithTargetPath>
   </ItemGroup>
 
 </Project>

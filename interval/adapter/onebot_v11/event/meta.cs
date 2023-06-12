@@ -23,7 +23,6 @@ namespace leaf.adapter.onebot_v11.eve
 
     public class HeartBeatMetaEvent : MetaEvent
     {
-        public Int64 self_id {get;set;}
 
         public int interval {get;set;}
 
